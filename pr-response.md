@@ -25,10 +25,11 @@ arguments my own. Specific uses:
   had no relationship to `Film`. I fixed it by adding the relationship, mirroring how
   `CollectionEntry` gets its `film`.
 - **Stress-testing my design arguments (Comments 4 and 5).** This is where I was careful to do
-  my own reasoning. For **Comment 4 (visibility)**, the argument is mine: I used my own
-  Goodreads experience — that I leave certain books off my public "want to read" list because
-  I'm known in the horror community but also read queer romance, and that a public-by-default
-  list could out a closeted user. The assistant acted as a sounding board: it reflected my
+  my own reasoning. For **Comment 4 (visibility)**, the argument is mine: I reasoned from how
+  taste-community platforms like Goodreads work — that a user known for one genre may be drawn
+  to titles they aren't ready to broadcast to their following, and that a public-by-default list
+  could expose a user's private interest through a single saved film. The assistant acted as a sounding
+  board: it reflected my
   argument back, helped me name the tradeoff (a private default can make the app look empty and
   puts the sharing burden on users), and pointed out that the `public` flag already lives
   per-entry so my "per-film switch" idea was buildable. I asked it what a reviewer might push
@@ -67,7 +68,8 @@ then checks for an existing entry, then commits — I copied that "check, check,
 
 **How I verified:** I wrote a small script that adds a film to a watchlist twice. The first
 add succeeded; the second raised `AlreadyInWatchlistError` (message: "Film '1' is already on
-this user's watchlist"), confirming no duplicate row is created. The full existing test suite
+this user's watchlist" — film IDs were integers at this point, pre-rebase), confirming no
+duplicate row is created. The full existing test suite
 still passes, and the app imports cleanly. (A dedicated automated test follows in Comment 3's
 work / the stretch tests.)
 
@@ -94,17 +96,19 @@ watched and rated. A rating is a finished statement — "I watched this, here's 
 watchlist is intent and curiosity: it shows what you're drawn to *before* you've decided how
 you feel about it, which is more vulnerable and easier to misread.
 
-I'll use my own Goodreads profile as an example. I'm comfortable with my "want to read" list
-being public in general, but there are books I deliberately leave *off* it because I don't want
-to announce that I want to read them yet. I'm heavily involved in the horror community, but I
-have a huge soft spot for romance — specifically queer romance. Making a want-to-read public
-can push you "off-brand" with the followers you've built, and there's a deeper problem: what
-about a closeted person? A public-by-default watchlist could out someone to their community
-through a single film they saved — a queer film, a recovery documentary, anything tied to
-identity they aren't ready to share. A default should never be the thing that exposes a user.
-CineLog is a taste-driven community app (the same social dynamics as Goodreads or Letterboxd),
-so private-by-default protects users from involuntary disclosure while still letting them opt
-in to sharing on their own terms.
+Consider how people use taste-community platforms like Goodreads or Letterboxd. Users are often
+comfortable with a public "want to read/watch" list in general, but still leave certain titles
+*off* it — they don't want to announce a particular interest yet. People build a reputation
+around one genre (say, horror) and gather followers who expect that, but interests rarely fit
+one box: a user known for horror might also be curious about a lighthearted romance or a
+documentary on a personal topic they aren't ready to broadcast to that audience. On a
+public-by-default list, that curiosity gets announced whether the user meant to share it or not.
+It can push someone "off-brand" with the following they've built — and in the worst case it can
+expose something genuinely private: a public-by-default watchlist could reveal a sensitive
+interest a user never chose to make public, through a single saved film. A default should never
+be the thing that exposes a user. CineLog is a taste-driven community app
+with these same social dynamics, so private-by-default protects users from involuntary
+disclosure while still letting them opt in to sharing on their own terms.
 
 **Tradeoff acknowledged:** Public-by-default is better for making the app feel *alive*. If
 every watchlist is private, a new or small CineLog can look empty and unused, because none of
@@ -115,8 +119,8 @@ fuels discovery (you find films through other people's lists).
 I think the strongest resolution keeps the safety floor without giving up discovery: **default
 each film to private, but let users flip individual films to public.** Because the `public`
 flag lives on each `WatchlistEntry` (per film, not per user), the data model already supports
-this — a user can keep their queer-romance picks private while making the horror films they're
-proud of public. Engaged users can still populate public discovery and keep the app feeling
+this — a user can keep their more personal picks private while making the films they're happy to
+be associated with public. Engaged users can still populate public discovery and keep the app feeling
 active; users who want privacy are protected by default. (A per-film visibility toggle endpoint
 that exposes this is implemented / discussed in the stretch features section.)
 
@@ -136,8 +140,8 @@ the film you saved most recently is usually the one you're most itching to watch
 heard about it, so it should be easy to find at the top.
 
 Where I push the conversation further: when *I* browse my own watchlist, I'm usually looking
-for a film by its **release date** (the movie's year — e.g. I'm in the mood for something from
-the 70s, or something brand new). That's a third axis that neither alphabetical nor date-added
+for a film by its **release date** (the movie's year — e.g. I'm in the mood for some 80s schlock
+horror, or something brand new). That's a third axis that neither alphabetical nor date-added
 gives you. So the honest answer is that no single hardcoded order serves everyone — the real
 improvement is letting users sort the watchlist (date-added by default, plus release-year and
 alphabetical). That keeps the sensible default the maintainer asked for while actually serving
