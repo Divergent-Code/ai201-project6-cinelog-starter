@@ -287,8 +287,10 @@ valid `user_id` and `film_id` (UUIDs) from the seeded database.
 8. **Run the test suite:** `pytest tests/ -v` → all 10 tests pass.
 
 ### git log (final history)
-<!-- Paste a SCREENSHOT of `git log --oneline` on the feature/watchlist branch here.
-     Text version below for reference (11 commits, all conventional, no merge commits). -->
+
+![git log --oneline on the feature/watchlist branch showing 12 conventional commits with no merge commits](cinelog-git-log.png)
+
+<!-- Text version below for reference (all conventional, no merge commits). -->
 ```
 docs: add pr-response.md with visibility and sort order decisions
 feat: add public visibility parameter to watchlist with private default
