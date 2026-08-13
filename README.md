@@ -1,5 +1,11 @@
 # CineLog
 
+![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.0-000000?style=for-the-badge&logo=flask&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-3.1-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-10%20passing-2EA44F?style=for-the-badge&logo=pytest&logoColor=white)
+
 A community film tracking app. Users log films they've watched, rate them, and build collections.
 
 This repository is the starting point for **Project 6: Simulated Code Review**.
